@@ -3,7 +3,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 from dotenv import load_dotenv
 import os
 
-
 load_dotenv()
 
 class GoogleTableManager:

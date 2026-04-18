@@ -4,8 +4,8 @@ from datetime import date
 import os
 import dotenv
 
-s1_db = os.dotenv.get("S1_DB")
-s2_db = os.dotenv.get("S2_DB")
+s1_db = os.getenv("S1_DB")
+s2_db = os.getenv("S2_DB")
 
 bats = ['796', '11']
 
