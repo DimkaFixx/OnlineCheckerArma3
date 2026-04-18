@@ -1,8 +1,10 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import date
+from dotenv import load_dotenv
 import os
-import dotenv
+
+load_dotenv()
 
 s1_db = os.getenv("S1_DB")
 s2_db = os.getenv("S2_DB")
@@ -63,7 +65,7 @@ def init_db():
     servers_config[1]['models'] = bat_models_s1
     servers_config[2]['models'] = bat_models_s2
     
-    print("БД инициализирована для обоих серверов")
+    print("БД инициализирована для обоих серверов", flush=True)
 
 
 # Инициализируем БД при запуске
@@ -108,10 +110,10 @@ def update_bats_data(bats_dict, server=1):
                         player.ticks = 1
         
         session.commit()
-        print(f"✅ Сервер {server}: БД обновлена")
+        print(f"✅ Сервер {server}: БД обновлена", flush=True)
     except Exception as e:
         session.rollback()
-        print(f"❌ Ошибка при обновлении БД (сервер {server}): {e}")
+        print(f"❌ Ошибка при обновлении БД (сервер {server}): {e}", flush=True)
     finally:
         session.close()
 
