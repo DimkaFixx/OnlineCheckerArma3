@@ -1,6 +1,8 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from dotenv import load_dotenv
+from datetime import datetime
+from db import get_players_data
 import os
 
 load_dotenv()
@@ -74,3 +76,62 @@ class GoogleTableManager:
         for i in range(len(jedi_prefixes)):
             jedi_prefixes[i] = jedi_prefixes[i][0]
         return jedi_prefixes
+
+    def update_data(self, bat_id):
+        """
+        Обновляет C1:C100 и D1:D100 данными из БД для бойцов из B1:B100.
+        Формат ячейки: "<дней_назад> (<часов>)".
+        """
+        users_by_bat = self.get_data_of_users()
+        target_bat_id = str(bat_id)
+        rows = []
+
+        # Берем только выбранный батальон и сохраняем порядок бойцов.
+        users = users_by_bat.get(target_bat_id, [])
+        for nickname in users:
+            rows.append((target_bat_id, nickname.strip() if nickname else ""))
+
+        # Гарантируем ровно 100 строк для обновления диапазонов C1:C100 и D1:D100.
+        if len(rows) < 100:
+            rows.extend([("", "")] * (100 - len(rows)))
+        else:
+            rows = rows[:100]
+
+        # Запрос только по выбранному батальону.
+        cleaned_users = [u for _, u in rows if u]
+        server1_data = get_players_data(cleaned_users, server=1, bat_id=target_bat_id)
+        server2_data = get_players_data(cleaned_users, server=2, bat_id=target_bat_id)
+        today = datetime.now().date()
+
+        def format_value(player_tuple):
+            if not player_tuple or player_tuple == (None, None):
+                return ""
+
+            date_str, ticks = player_tuple
+            if not date_str or ticks is None:
+                return ""
+
+            try:
+                player_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+                days_ago = (today - player_date).days
+                hours = round(ticks / 6, 2)
+                return f"{days_ago} ({hours})"
+            except Exception:
+                return ""
+
+        col_c = []
+        col_d = []
+
+        for _, nickname in rows:
+            if not nickname:
+                col_c.append([""])
+                col_d.append([""])
+                continue
+
+            col_c.append([format_value(server1_data.get(nickname, (None, None)))])
+            col_d.append([format_value(server2_data.get(nickname, (None, None)))])
+
+        self.sheet.update('C1:C100', col_c)
+        self.sheet.update('D1:D100', col_d)
+    
+    

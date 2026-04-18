@@ -111,13 +111,14 @@ def update_bats_data(bats_dict, server=1):
         session.close()
 
 
-def get_players_data(nicknames, server=1):
+def get_players_data(nicknames, server=1, bat_id=None):
     """
     Получает данные игроков по списку никнеймов.
     
     Args:
         nicknames: список никнеймов ['nick1', 'nick2', ...]
         server: номер сервера (1 или 2)
+        bat_id: ID батальона (например '796'). Если указан, поиск только в его таблице.
     
     Returns:
         Словарь вида {'nick1': ('2026-04-19', 5), 'nick2': ('2026-04-18', 1)}
@@ -130,16 +131,32 @@ def get_players_data(nicknames, server=1):
     result = {}
     
     try:
+        # Режим поиска только в одном батальоне.
+        if bat_id is not None:
+            BatModel = bat_models.get(str(bat_id))
+            if BatModel is None:
+                for nickname in nicknames:
+                    result[nickname] = (None, None)
+                return result
+
+            for nickname in nicknames:
+                player = session.query(BatModel).filter_by(nickname=nickname).first()
+                if player:
+                    result[nickname] = (player.date, player.ticks)
+                else:
+                    result[nickname] = (None, None)
+            return result
+
+        # Режим старого поведения: поиск по всем батальонам.
         for nickname in nicknames:
-            # Ищем игрока во всех батальонах
             found = False
-            for bat_id, BatModel in bat_models.items():
+            for _, BatModel in bat_models.items():
                 player = session.query(BatModel).filter_by(nickname=nickname).first()
                 if player:
                     result[nickname] = (player.date, player.ticks)
                     found = True
                     break
-            
+
             if not found:
                 result[nickname] = (None, None)
     
