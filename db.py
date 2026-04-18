@@ -28,17 +28,22 @@ servers_config = {
 
 def create_bat_model(bat_id, base):
     """Создаёт модель для батальона"""
-    class BatPlayer(base):
-        __tablename__ = f'bat_{bat_id}'
-        
-        id = Column(Integer, primary_key=True, autoincrement=True)
-        nickname = Column(String, nullable=False)
-        date = Column(String, nullable=False)
-        ticks = Column(Integer, nullable=False)
-        
-        def __repr__(self):
-            return f"<BatPlayer(id={self.id}, nickname='{self.nickname}', date='{self.date}', ticks={self.ticks})>"
-    
+    class_name = f"BatPlayer_{bat_id}"
+    BatPlayer = type(
+        class_name,
+        (base,),
+        {
+            "__tablename__": f"bat_{bat_id}",
+            "__module__": __name__,
+            "id": Column(Integer, primary_key=True, autoincrement=True),
+            "nickname": Column(String, nullable=False),
+            "date": Column(String, nullable=False),
+            "ticks": Column(Integer, nullable=False),
+            "__repr__": lambda self: (
+                f"<BatPlayer(id={self.id}, nickname='{self.nickname}', date='{self.date}', ticks={self.ticks})>"
+            ),
+        },
+    )
     return BatPlayer
 
 

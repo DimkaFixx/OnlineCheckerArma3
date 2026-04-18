@@ -131,7 +131,7 @@ class GoogleTableManager:
             col_c.append([format_value(server1_data.get(nickname, (None, None)))])
             col_d.append([format_value(server2_data.get(nickname, (None, None)))])
 
-        self.sheet.update('C1:C100', col_c)
-        self.sheet.update('D1:D100', col_d)
+        self.sheet.update(values=col_c, range_name='C1:C100')
+        self.sheet.update(values=col_d, range_name='D1:D100')
     
     
