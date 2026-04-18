@@ -1,6 +1,7 @@
 from parcedata import Parser, Bats
 from sheets import GoogleTableManager
 from db import update_bats_data, get_players_data
+import time
 
 sheets_manager = GoogleTableManager()
 sheets_manager.connect()
@@ -20,5 +21,6 @@ while True:
     update_bats_data(bats.dict_of_bats_server2, server=2)
 
     sheets_manager.update_data('796')
-    time.sleep(10*60)
     print("Данные обновлены, следующая проверка через 10 минут")
+    time.sleep(10*60)
+    
