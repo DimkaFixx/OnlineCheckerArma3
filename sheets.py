@@ -69,3 +69,9 @@ class GoogleTableManager:
         for i in range(len(bats)):
             bats[i] = bats[i][0]
         return bats
+
+    def get_jedi_prefixes(self):
+        jedi_prefixes = self.sheet.get_values('G1:G100')
+        for i in range(len(jedi_prefixes)):
+            jedi_prefixes[i] = jedi_prefixes[i][0]
+        return jedi_prefixes

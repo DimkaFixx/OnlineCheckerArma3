@@ -121,7 +121,7 @@ class Bats:
             return player_nickname, "C-3"
 
         #Все, кроме джидов
-        bat = bat.split("-")[0].strip()
+        bat = bat.split("-")[1].strip() if "-" in bat else bat.strip()
         if bat in self.bats:
             player_nickname = re.sub(r'\s*\[.*?\]\s*', '', player_nickname)
             player_nickname = self.format_player_nickname_not_with_bat(player_nickname)
@@ -134,7 +134,7 @@ class Bats:
             return player_nickname, bat
         
         #Тут мы понимаем, что джедаи невалидированы
-        if bat in jedi_prefixes:
+        if bat in self.jedi_prefixes:
             player_nickname = re.sub(r'\s*\[.*?\]\s*', '', player_nickname)
             player_nickname = self.format_player_nickname_not_with_bat(player_nickname)
 
