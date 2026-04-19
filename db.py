@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-from datetime import date
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 import os
 
@@ -10,6 +10,7 @@ s1_db = os.getenv("S1_DB")
 s2_db = os.getenv("S2_DB")
 
 bats = ['796', '11']
+MSK_TZ = timezone(timedelta(hours=3))
 
 # ===== СЕРВЕР 1 =====
 engine1 = create_engine(s1_db, echo=False)
@@ -84,7 +85,7 @@ def update_bats_data(bats_dict, server=1):
     bat_models = config['models']
     
     session = Session()
-    today = str(date.today())
+    today = datetime.now(MSK_TZ).date().isoformat()
     
     try:
         for bat_id, nicknames in bats_dict.items():

@@ -1,11 +1,12 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from db import get_players_data
 import os
 
 load_dotenv()
+MSK_TZ = timezone(timedelta(hours=3))
 
 class GoogleTableManager:
     def __init__(self, creditals_path=".creditals.json"):
@@ -101,7 +102,7 @@ class GoogleTableManager:
         cleaned_users = [u for _, u in rows if u]
         server1_data = get_players_data(cleaned_users, server=1, bat_id=target_bat_id)
         server2_data = get_players_data(cleaned_users, server=2, bat_id=target_bat_id)
-        today = datetime.now().date()
+        today = datetime.now(MSK_TZ).date()
 
         def format_value(player_tuple):
             if not player_tuple or player_tuple == (None, None):

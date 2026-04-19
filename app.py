@@ -2,6 +2,9 @@ from parcedata import Parser, Bats
 from sheets import GoogleTableManager
 from db import update_bats_data, get_players_data
 import time
+from datetime import datetime, timezone, timedelta
+
+MSK_TZ = timezone(timedelta(hours=3))
 
 def main():
     sheets_manager = GoogleTableManager()
@@ -22,7 +25,8 @@ def main():
         update_bats_data(bats.dict_of_bats_server2, server=2)
 
         sheets_manager.update_data('796')
-        print(f"{time.strftime('%Y-%m-%d %H:%M:%S')} | Данные обновлены, следующая проверка через 10 минут", flush=True)
+        now_msk = datetime.now(MSK_TZ).strftime('%Y-%m-%d %H:%M:%S')
+        print(f"{now_msk} | Данные обновлены, следующая проверка через 10 минут", flush=True)
         time.sleep(10*60)
 
 main()
