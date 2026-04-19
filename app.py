@@ -22,7 +22,7 @@ def main():
         update_bats_data(bats.dict_of_bats_server2, server=2)
 
         sheets_manager.update_data('796')
-        print("Данные обновлены, следующая проверка через 10 минут", flush=True)
+        print(f"{time.strftime('%Y-%m-%d %H:%M:%S')} | Данные обновлены, следующая проверка через 10 минут", flush=True)
         time.sleep(10*60)
 
 main()
