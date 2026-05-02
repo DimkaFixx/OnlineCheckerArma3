@@ -9,16 +9,22 @@ load_dotenv()
 s1_db = os.getenv("S1_DB")
 s2_db = os.getenv("S2_DB")
 
+
+def _require_database_url(value, name):
+    if not value:
+        raise ValueError(f"{name} is not set in environment")
+    return value
+
 bats = ['796', '11']
 MSK_TZ = timezone(timedelta(hours=3))
 
 # ===== СЕРВЕР 1 =====
-engine1 = create_engine(s1_db, echo=False)
+engine1 = create_engine(_require_database_url(s1_db, "S1_DB"), echo=False, pool_pre_ping=True)
 Base1 = declarative_base()
 Session1 = sessionmaker(bind=engine1)
 
 # ===== СЕРВЕР 2 =====
-engine2 = create_engine(s2_db, echo=False)
+engine2 = create_engine(_require_database_url(s2_db, "S2_DB"), echo=False, pool_pre_ping=True)
 Base2 = declarative_base()
 Session2 = sessionmaker(bind=engine2)
 
