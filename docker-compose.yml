@@ -3,6 +3,8 @@ version: '3.9'
 services:
   app:
     build: .
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: ["python", "-u", "app.py"]
     restart: unless-stopped
     volumes:
