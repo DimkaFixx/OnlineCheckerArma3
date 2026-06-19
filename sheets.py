@@ -30,9 +30,9 @@ class GoogleTableManager:
     def get_data_of_users(self): 
         #Получить значения с диапазона ячеек 
         bats = {}
-        bats['796'] = self.sheet.get_values('B1:B100')
-        for i in range(len(bats['796'])):
-            bats['796'][i] = bats['796'][i][0]
+        bats['327'] = self.sheet.get_values('B1:B100')
+        for i in range(len(bats['327'])):
+            bats['327'][i] = bats['327'][i][0]
         return bats
     
     def update_table(self):

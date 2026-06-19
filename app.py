@@ -37,7 +37,7 @@ def main():
             update_bats_data(bats.dict_of_bats_server1, server=1)
             update_bats_data(bats.dict_of_bats_server2, server=2)
 
-            sheets_manager.update_data('796')
+            sheets_manager.update_data('327')
             last_full_update_minute = now.minute
             print(f"{now.strftime('%Y-%m-%d %H:%M:%S')} | Данные обновлены, следующая проверка через 10 минут", flush=True)
         

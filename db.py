@@ -15,7 +15,7 @@ def _require_database_url(value, name):
         raise ValueError(f"{name} is not set in environment")
     return value
 
-bats = ['796', '11']
+bats = ['327', '11']
 MSK_TZ = timezone(timedelta(hours=3))
 
 # ===== СЕРВЕР 1 =====
@@ -83,7 +83,7 @@ def update_bats_data(bats_dict, server=1):
     Обновляет данные батальонов в БД.
     
     Args:
-        bats_dict: словарь вида {'796': ['nick1', 'nick2'], '11': ['nick3']}
+        bats_dict: словарь вида {'327': ['nick1', 'nick2'], '11': ['nick3']}
         server: номер сервера (1 или 2)
     """
     config = servers_config[server]
@@ -132,7 +132,7 @@ def get_players_data(nicknames, server=1, bat_id=None):
     Args:
         nicknames: список никнеймов ['nick1', 'nick2', ...]
         server: номер сервера (1 или 2)
-        bat_id: ID батальона (например '796'). Если указан, поиск только в его таблице.
+        bat_id: ID батальона (например '327'). Если указан, поиск только в его таблице.
     
     Returns:
         Словарь вида {'nick1': ('2026-04-19', 5), 'nick2': ('2026-04-18', 1)}
