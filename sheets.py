@@ -40,7 +40,8 @@ class GoogleTableManager:
         self.sheet = self.spreadsheet.worksheet("Состав")
         rows_count = self.sheet.row_count
         cols_count = self.sheet.col_count
-        self.sheet.sort([(1, 'asc')], range=f'{os.getenv("ROWSTOSORT_FROM")}3:{os.getenv("ROWSTOSORT_TO")}{rows_count}')
+        sort_range = f'{os.getenv("ROWSTOSORT_FROM")}3:{os.getenv("ROWSTOSORT_TO")}{rows_count}'
+        self.sheet.sort((1, 'asc'), range=sort_range)
         full_range = f"A1:{gspread.utils.rowcol_to_a1(rows_count, cols_count)}"
         border_style = {
             "style": "SOLID",
