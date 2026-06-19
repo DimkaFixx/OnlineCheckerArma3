@@ -160,19 +160,19 @@ def get_players_data(nicknames, server=1, bat_id=None):
                 else:
                     result[nickname] = (None, None)
             return result
+        else:
+            # Режим старого поведения: поиск по всем батальонам.
+            for nickname in nicknames:
+                found = False
+                for _, BatModel in bat_models.items():
+                    player = session.query(BatModel).filter_by(nickname=nickname).first()
+                    if player:
+                        result[nickname] = (player.date, player.ticks)
+                        found = True
+                        break
 
-        # Режим старого поведения: поиск по всем батальонам.
-        for nickname in nicknames:
-            found = False
-            for _, BatModel in bat_models.items():
-                player = session.query(BatModel).filter_by(nickname=nickname).first()
-                if player:
-                    result[nickname] = (player.date, player.ticks)
-                    found = True
-                    break
-
-            if not found:
-                result[nickname] = (None, None)
+                if not found:
+                    result[nickname] = (None, None)
     
     finally:
         session.close()
