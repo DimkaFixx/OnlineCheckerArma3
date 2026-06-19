@@ -14,13 +14,13 @@ def main():
     last_table_update_minute = None
     last_full_update_minute = None
 
+    now = datetime.now(MSK_TZ)
+
     sheets_manager.update_table()
     last_table_update_minute = now.minute
     print(f"{now.strftime('%Y-%m-%d %H:%M:%S')} | Форматирование таблицы", flush=True)
 
     while True:
-        now = datetime.now(MSK_TZ)
-        
         # Обновляем таблицу на :05, :15, :25, :35, :45, :55
         if now.minute % 10 == 5 and last_table_update_minute != now.minute:
             sheets_manager.update_table()
