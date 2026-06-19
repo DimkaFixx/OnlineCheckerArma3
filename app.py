@@ -17,7 +17,6 @@ def main():
     now = datetime.now(MSK_TZ)
 
     sheets_manager.update_table()
-    last_table_update_minute = now.minute
     print(f"{now.strftime('%Y-%m-%d %H:%M:%S')} | Форматирование таблицы", flush=True)
 
     while True:
