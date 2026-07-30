@@ -30,6 +30,7 @@ def main():
         # Полный цикл каждые 10 минут (на :00, :10, :20, :30...)
         if now.minute % 10 == 0 and last_full_update_minute != now.minute:
             sheets_manager.update_table()
+            """
             print(f"{now.strftime('%Y-%m-%d %H:%M:%S')} | Форматирование таблицы", flush=True)
             bats = sheets_manager.get_bats()
             ranks = sheets_manager.get_ranks()
@@ -44,7 +45,7 @@ def main():
             sheets_manager.update_data('327')
             last_full_update_minute = now.minute
             print(f"{now.strftime('%Y-%m-%d %H:%M:%S')} | Данные обновлены, следующая проверка через 10 минут", flush=True)
-        
+            """
         time.sleep(10)
 
 main()
